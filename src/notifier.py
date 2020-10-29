@@ -17,6 +17,6 @@ def send_email(subject, message):
         msg["Subject"] = subject
         msg["From"] = config["sender"]["email"]
         msg["To"] = config["receiver"]["email"]
-        password = open(os.environ['EMAIL_PASS'], "r").read()
+        password = os.environ['EMAIL_PASS']
         server.login(config["sender"]["email"], password)
         server.send_message(msg)
