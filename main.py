@@ -8,9 +8,11 @@ import logging
 import time
 
 if __name__ == "__main__":
+    db_path = 'db/main.db'
     config = configparser.ConfigParser()
     config.read('configs/apartments.ini')
-    db = TinyDB('db/main.db')
+    open(db_path, 'a+')
+    db = TinyDB(db_path)
 
     # UlovDomov
     ulov_domov = UlovDomov(**config._sections["ulov_domov"])
