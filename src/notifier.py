@@ -1,6 +1,7 @@
 import configparser
 import smtplib
 import ssl
+import os
 from email.message import EmailMessage
 
 PORT = 465
@@ -16,6 +17,6 @@ def send_email(subject, message):
         msg["Subject"] = subject
         msg["From"] = config["sender"]["email"]
         msg["To"] = config["receiver"]["email"]
-        password = open("secrets/email_pass", "r").read()
+        password = open(os.environ['EMAIL_PASS'], "r").read()
         server.login(config["sender"]["email"], password)
         server.send_message(msg)
