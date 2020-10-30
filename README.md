@@ -9,7 +9,7 @@
 server or locally to receive new offers from all sites for free!
 
 ### Websites
-* bezrealitky.cz (TBD)
+* bezrealitky.cz (functional)
 * sreality.cz (TBD)
 * ulovdomov.cz (functional)
 
@@ -24,6 +24,21 @@ must be separated by a single comma
 * atypický, dům, 5 a větší
 * Sdílený pokoj
 
-Example of types config for some who wants either 3 rooms or a house:
-``types = 3+1,4+kk,dům``
+### Bezrealitky.cz
+Possible config values for "types" option - you can use any combinations,
+must be separated by a single comma
+* garsoniera
+* 1-kk, 1-1
+* 2-kk, 2-1
+* 3-kk, 3-1
+* 4-kk, 4-1
+* 5-kk, 5-1
+* 6-kk, 6-1
+* 7-kk, 7-1
+* ostatni
+
+Possible config values for "offer_type" option - use just 1
+* pronajem
+* spolubydleni
+* prodej
 

@@ -24,15 +24,19 @@ def disposition_to_index(disp):
 
 
 class UlovDomov:
-    def __init__(self, price_min=None, price_max=None, size_min=None, size_max=None, types=None):
+    def __init__(self, price_min=None, price_max=None, size_min=None, size_max=None,
+                 types=None, no_commission=None, **kwargs):
         self.price_min = price_min
         self.price_max = price_max
         self.size_min = size_min
         self.size_max = size_max
         self.types = types
+        self.no_commission = no_commission
         self.base_url = "https://www.ulovdomov.cz/fe-api/find?offers_only=true"
         if types:
             self.transform_types_into_indexes()
+        if no_commission:
+            self.no_commission = True if no_commission.lower() == "true" else False
 
     def transform_types_into_indexes(self):
         result = []
@@ -41,7 +45,7 @@ class UlovDomov:
         self.types = list(map(str, sorted(result)))
 
     def build_payload(self):
-        return {
+        payload =  {
             "query": "Brno",
             "offer_type_id": "1",
             "dispositions": self.types,
@@ -50,13 +54,14 @@ class UlovDomov:
             "acreage_from": str(self.size_min),
             "acreage_to": str(self.price_max),
             "added_before": "",
-            "is_price_commision_free": False,
+            "is_price_commision_free": self.no_commission,
             "sort_by": "date:desc",
             "page": 1,
             "limit": 20,
             "bounds": {
                 "north_east": {"lng": 16.749343872070316, "lat": 49.31438004800689},
                 "south_west": {"lng": 16.406021118164066, "lat": 49.0900564769189}}}
+        return {k: v for k, v in payload.items() if v is not None}
 
     def get_new_apartments(self):
         payload = self.build_payload()
@@ -69,7 +74,7 @@ class UlovDomov:
         ap = UlovDomovApt(raw_apartment)
         disposition = index_to_disposition(ap.disposition_id)
         commission = 'yes' if ap.commission else 'no'
-        subject = f"{disposition} {ap.city}, {ap.street}, {ap.price} Kč"
+        subject = f"{disposition} {ap.size}m2 {ap.city}, {ap.street}, {ap.price} Kč"
         body = f"""\
             {ap.url}
             Published: {ap.format_publish_date()}
@@ -90,6 +95,7 @@ class UlovDomovApt:
         self.conveniences_url = "https://www.ulovdomov.cz/fe-api/common/conveniences"
         self.id = ap["id"]
         self.url = ap["absolute_url"]
+        self.size = ap["acreage"]
         self.disposition_id = ap["disposition_id"]
         self.price = ap["price_rental"]
         self.street = ap["street"]["label"]
@@ -101,6 +107,8 @@ class UlovDomovApt:
         self.conveniences = ap['conveniences']
 
     def format_publish_date(self):
+        if not self.published:
+            return ""
         return dt.strptime(self.published, "%Y-%m-%dT%H:%M:%S+%f").strftime("%d.%m. %Y %H:%M")
 
     def format_conveniences(self):
