@@ -25,10 +25,19 @@ phones and as many browser included. Here's what you'll need:
 3. Include the token in the environment variable ``export PUSHBULLET_TOKEN=...``
 4. Edit ``configs/notifications.ini`` pushbullet section and set ``enable_push = true``
 
-#### Setup Slack notifications (TBD)
-Soon.
+#### Setup Slack notifications
+If you use Slack at work, this is a perfect choice for you.
+1. Create a new Slack workspace (private or work email, does not matter)
+2. Go to https://api.slack.com/, create a new app and assign it to your
+new workspace.
+3. Create a new incoming webhook and assign it to a channel you wish to receive
+messages on.
+4. Copy webhook URL and put it into environment variable ``export SLACK_WEBHOOK=...``
+5. Edit ``configs/notifications.ini`` slack section and set ``enable_slack = true``
 
 #### How to run the app
+After you have enabled and set up at least 1 notification option (and disabled
+the ones you don't wish to use), simply run the app:
 1. ``pip3 install -r requirements.txt``
 2. ``python3 main.py``
 3. If you configured things correctly, you should start hearing some notifications.
