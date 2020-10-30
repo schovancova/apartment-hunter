@@ -1,12 +1,38 @@
 ## Scraping tool for apartment finding in Czech Republic
 
+This amazing tool will help you find a new apartment without any hassle,
+extra payments, spam or having to subscribe to 10 different paid apartment services.
+It's easy.
+1. Setup notification methods - you can do email, phone notifications, desktop notification,
+Slack, anything you want.
+2. Setup filters - how big do you want to go? What is your budget? All stored in a compact configuration file.
+3. Install the app and launch. It can run on your PC, on a server, on a cloud.
+4. Get all the sweet apartment notifications for free from most popular apartment sites.
+
 ### Usage
-1. Create throw-away email gmail account for sending emails
-2. Edit all configs, replace with your emails and values
-3. Put your new gmail account email into environment variable ``export EMAIL_PASS=...``
-4. ``pip3 install -r requirements.txt``
-5. You should see emails on your main account now, leave app running on
-server or locally to receive new offers from all sites!
+#### Setup email notifications
+You can choose to use email notifications - or not! Up to you. Here's how to do it:
+1. Create throw-away Gmail account for sending emails
+2. Edit ``configs/notifications.ini`` email section and set ``enable_email = true``, also
+add in your sender (throwaway) and receiver (where the notifications will arrive) emails.
+3. Put your new throwaway account email password into environment variable ``export EMAIL_PASS=...``
+
+#### Setup phone (and desktop) notifications
+This can work as a phone-only notifications or desktop too. You can have as many
+phones and as many browser included. Here's what you'll need:
+1. Download Pushbullet https://play.google.com/store/apps/details?id=com.pushbullet.android
+2. Set it up to your liking and create an API access token here https://www.pushbullet.com/#settings
+3. Include the token in the environment variable ``export PUSHBULLET_TOKEN=...``
+4. Edit ``configs/notifications.ini`` pushbullet section and set ``enable_push = true``
+
+#### Setup Slack notifications (TBD)
+Soon.
+
+#### How to run the app
+1. ``pip3 install -r requirements.txt``
+2. ``python3 main.py``
+3. If you configured things correctly, you should start hearing some notifications.
+If not, check the error output.
 
 At this moment you can set filters like 
 * price

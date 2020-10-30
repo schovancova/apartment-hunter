@@ -1,6 +1,6 @@
 """Constants"""
 CONFIG_PATH = 'configs/apartments.ini'
-EMAIL_CONFIG_PATH = 'configs/email.ini'
+NOTIFICATIONS_CONFIG_PATH = 'configs/notifications.ini'
 DB_PATH = 'db/main.db'
 SMTP_PORT = 465
 SMTP_SERVER = "smtp.gmail.com"

@@ -3,3 +3,4 @@ tinydb
 requests
 geopy
 beautifulsoup4
+notifiers

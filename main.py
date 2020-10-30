@@ -6,7 +6,8 @@ from src.sites.ulov_domov import UlovDomov
 from src.sites.bez_realitky import BezRealitky
 from src.utils.config_validator import validate_config
 from src.utils.common import get_config, get_db, get_logger
-from src.utils.notifier import send_email
+from src.notifiers.mailer import send_email
+from src.notifiers.pushbullet import send_push_message
 import src.utils.constants as const
 
 
@@ -26,6 +27,7 @@ def main():
                     logging.info("Sent an email with new apartment")
                     subject, message = ulov_domov.get_email_message(apartment)
                     send_email(subject, message)
+                    send_push_message(subject, message, apartment.url)
                     ulov_domov.save_apartment_into_db(database, apartment.id)
             logging.info("Finished inspection of apartment batch")
         if bez_realitky.active:
@@ -35,6 +37,7 @@ def main():
                     logging.info("Sent an email with new apartment")
                     subject, message = bez_realitky.get_email_message(apartment)
                     send_email(subject, message)
+                    send_push_message(subject, message, apartment.url)
                     bez_realitky.save_apartment_into_db(database, apartment.id)
             logging.info("Finished inspection of apartment batch")
         time.sleep(180)
