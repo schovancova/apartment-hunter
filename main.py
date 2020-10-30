@@ -18,14 +18,14 @@ if __name__ == "__main__":
     ulov_domov = UlovDomov(**config._sections["ulov_domov"])
     Apartment = Query()
 
-    logger = logging.getLogger('simple_example')
-    logger.setLevel(logging.DEBUG)
-    logging.info("Starting logger")
+    logger = logging.getLogger('apartment_logger')
+    logging.basicConfig(level=logging.INFO)
+    logging.info("Starting scraping")
 
     while True:
         apartments = ulov_domov.get_new_apartments()
         newest = apartments[0]['published_at']
-        logging.info(f"Newest apartment from the batch is from {newest}")
+        logging.info(f"New batch acquired, newest apartment is from {newest}")
         for ap in apartments:
             saved = db.search(Apartment.id == ap["id"])
             if not saved:
@@ -33,5 +33,5 @@ if __name__ == "__main__":
                 subject, message = ulov_domov.get_email_message(ap)
                 send_email(subject, message)
                 ulov_domov.save_apartment_into_db(db, ap)
-        logging.info("Finished inspection of apartment batch")
+        logging.info("Finished inspection of apartment batch, sleep for 3 minutes")
         time.sleep(180)

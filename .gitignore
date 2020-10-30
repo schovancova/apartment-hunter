@@ -1,7 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
-secrets/
-db/
+db/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -132,3 +131,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+.idea/.gitignore
+.idea/apartment-hunter.iml
+.idea/dictionaries/
+.idea/inspectionProfiles/
+.idea/modules.xml
+.idea/vcs.xml
