@@ -73,7 +73,7 @@ class BezRealitky(BaseSite):
     def get_new_apartments(self):
         """Get new apartment objects"""
         payload = self.build_payload()
-        req = requests.post(self.base_url, data=payload)
+        req = requests.post(self.base_url, headers=const.HEADERS, data=payload)
         content = json.loads(req.content)
         return [BezRealitkyApartment(ap) for ap in content]
 

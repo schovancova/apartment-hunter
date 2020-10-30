@@ -11,7 +11,7 @@ disposition_url = "https://www.ulovdomov.cz/fe-api/disposition/filter-only/1"
 
 def index_to_disposition(index):
     """Ulovdomov uses indexes instead of dispositions"""
-    req = requests.get(disposition_url)
+    req = requests.get(disposition_url, headers=const.HEADERS)
     content = json.loads(req.content)
     for disposition in content:
         if disposition["id"] == index:
@@ -20,7 +20,7 @@ def index_to_disposition(index):
 
 def disposition_to_index(disp):
     """Ulovdomov uses indexes instead of dispositions"""
-    req = requests.get(disposition_url)
+    req = requests.get(disposition_url, headers=const.HEADERS)
     content = json.loads(req.content)
     for disposition in content:
         if disposition["label"] == disp:
@@ -78,7 +78,7 @@ class UlovDomov(BaseSite):
     def get_new_apartments(self):
         """Get new apartment objects"""
         payload = self.build_payload()
-        req = requests.post(self.base_url, data=json.dumps(payload))
+        req = requests.post(self.base_url, headers=const.HEADERS, data=json.dumps(payload))
         content = json.loads(req.content)['offers']
         return [UlovDomovApartment(ap) for ap in content]
 
