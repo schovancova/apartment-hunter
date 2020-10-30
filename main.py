@@ -1,56 +1,44 @@
 #!/usr/bin/env python3
 import configparser
 import os
-from src.ulov_domov import UlovDomov
-from src.bez_realitky import BezRealitky
-from src.notifier import send_email
-from tinydb import TinyDB, Query
+from src.sites.ulov_domov import UlovDomov
+from src.sites.bez_realitky import BezRealitky
+from src.objects.bez_realitky_apartment import BezRealitkyApartment
+from src.objects.ulov_domov_apartment import UlovDomovApartment
+from src.utils.notifier import send_email
+from src.utils.config_validator import validate_config
+from src.utils.common import get_config, get_db, get_logger
+import src.utils.constants as const
 import logging
 import time
 
 if __name__ == "__main__":
-    db_path = 'db/main.db'
-    config = configparser.ConfigParser()
-    config.read('configs/apartments.ini')
-    open(db_path, 'a+')
-    db = TinyDB(db_path)
+    config = get_config(const.CONFIG_PATH)
+    validate_config(config)
+    db = get_db(const.DB_PATH)
+    logger = get_logger()
 
-    # UlovDomov
-    ulov_domov = UlovDomov(**config._sections["ulov_domov"])
-    Apartment = Query()
-
-    #Bezrealitky
-    bez_realitky = BezRealitky(**config._sections["bez_realitky"])
-
-    logger = logging.getLogger('apartment_logger')
-    logging.basicConfig(level=logging.INFO)
-    logging.info(f"Using filters {config._sections['ulov_domov']}")
-    logging.info(f"Using filters {config._sections['bez_realitky']}")
+    ulov_domov = UlovDomov(**dict(config.items(const.ULOVDOMOV_NAME)))
+    bez_realitky = BezRealitky(**dict(config.items(const.BEZREALITKY_NAME)))
 
     while True:
-        if config["ulov_domov"]["active"] == "true":
-            apartments = ulov_domov.get_new_apartments()
-            newest = apartments[0].get('published_at')
-            logging.info(f"New batch for UlovDomov acquired, newest apartment is from {newest}")
-            for ap in apartments:
-                saved = db.search(Apartment.id == ap["id"])
-                if not saved:
+        if ulov_domov.active:
+            for ap in ulov_domov.get_new_apartments():
+                logger.info(ap.url)
+                if not ulov_domov.is_in_db(db, ap.id):
                     logging.info("Sent an email with new apartment")
                     subject, message = ulov_domov.get_email_message(ap)
-                    send_email(subject, message)
-                    ulov_domov.save_apartment_into_db(db, ap)
+                    #send_email(subject, message)
+                    #ulov_domov.save_apartment_into_db(db, ap.id)
             logging.info("Finished inspection of apartment batch")
-        if config["bez_realitky"]["active"] == "true":
-            apartments = bez_realitky.get_new_apartments()
-            newest = apartments[0].get('timeOrder').get('date')
-            logging.info(f"New batch for BezRealitky acquired, newest apartment is from {newest}")
-            for ap in apartments:
-                saved = db.search(Apartment.id == ap["id"])
-                if not saved:
+        if bez_realitky.active:
+            for ap in bez_realitky.get_new_apartments():
+                logger.info(ap.url)
+                if not bez_realitky.is_in_db(db, ap.id):
                     logging.info("Sent an email with new apartment")
                     subject, message = bez_realitky.get_email_message(ap)
-                    send_email(subject, message)
-                    bez_realitky.save_apartment_into_db(db, ap)
+                    #send_email(subject, message)
+                    #bez_realitky.save_apartment_into_db(db, ap.id)
             logging.info("Finished inspection of apartment batch")
 
         time.sleep(180)

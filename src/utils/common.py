@@ -1,5 +1,25 @@
 from geopy.geocoders import Nominatim
+import configparser
+from tinydb import TinyDB
 import math
+import logging
+
+
+def get_config(path):
+    config = configparser.ConfigParser()
+    config.read(path)
+    return config
+
+
+def get_db(path):
+    open(path, 'a+')
+    return TinyDB(path)
+
+
+def get_logger():
+    logger = logging.getLogger('apartment_logger')
+    logging.basicConfig(level=logging.INFO)
+    return logger
 
 
 def get_bounding_box(city, km_radius):

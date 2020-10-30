@@ -16,26 +16,16 @@ server or locally to receive new offers from all sites for free!
 ### Ulovdomov.cz
 Possible config values for "types" option - you can use any combinations,
 must be separated by a single comma
-* garsonka
-* 1+kk, 1+1 
-* 2+kk, 2+1
-* 3+kk, 3+1
-* 4+kk, 4+1
-* atypický, dům, 5 a větší
-* Sdílený pokoj
+* studio
+* from 1+1 and 1+kk all the way up 4+1 and 4+kk
+* atypical,house,5+,room
 
 ### Bezrealitky.cz
 Possible config values for "types" option - you can use any combinations,
 must be separated by a single comma
-* garsoniera
-* 1-kk, 1-1
-* 2-kk, 2-1
-* 3-kk, 3-1
-* 4-kk, 4-1
-* 5-kk, 5-1
-* 6-kk, 6-1
-* 7-kk, 7-1
-* ostatni
+* studio
+* from 1+1 and 1+kk all the way up 7+1 and 7+kk
+* other
 
 Possible config values for "offer_type" option - use just 1
 * pronajem
