@@ -1,16 +1,14 @@
 """https://www.bezrealitky.cz/"""
 import json
 import requests
-import math
-from datetime import datetime as dt
 from src.utils.common import get_bounding_box
 from src.objects.bez_realitky_apartment import BezRealitkyApartment
-from bs4 import BeautifulSoup
 import src.utils.constants as const
 from src.sites.base_site import BaseSite
 
 
 class BezRealitky(BaseSite):
+    """Bezrealitky site operator"""
     def __init__(self, price_min=None, price_max=None, size_min=None, size_max=None,
                  offer_type=None, types=None, estate_type=None, radius=5, city="Brno", active=True):
         super().__init__(price_min, price_max, size_min, size_max, types, radius, city, active)
@@ -26,12 +24,14 @@ class BezRealitky(BaseSite):
             self.estate_type = self.transform_estate_type()
 
     def transform_estate_type(self):
+        """Transform filter estate type into site API estate type"""
         return {
             "flat": "byt",
-            "dum": "house",
+            "house": "dum",
         }.get(self.estate_type)
 
     def transform_offer_type(self):
+        """Transform filter offer type into site API offer type"""
         return {
             "sale": "prodej",
             "rent": "pronajem",
@@ -39,7 +39,7 @@ class BezRealitky(BaseSite):
         }.get(self.offer_type)
 
     def transform_types_into_site_types(self):
-        # translate universal filter into site filter
+        """Transform filter types into site API types"""
         site_types = {
             "studio": "garsoniera",
             "other": "ostatni"
@@ -53,6 +53,7 @@ class BezRealitky(BaseSite):
         return ",".join(result)
 
     def build_payload(self):
+        """Build API payload"""
         bounding_box = get_bounding_box(self.city, self.radius)
         formatted_box = str(json.dumps(
             [[[bounding_box["nw"], bounding_box["ne"], bounding_box["se"], bounding_box["sw"]]]]
@@ -70,6 +71,7 @@ class BezRealitky(BaseSite):
         return {k: v for k, v in payload.items() if v}
 
     def get_new_apartments(self):
+        """Get new apartment objects"""
         payload = self.build_payload()
         req = requests.post(self.base_url, data=payload)
         content = json.loads(req.content)
@@ -77,6 +79,7 @@ class BezRealitky(BaseSite):
 
     @staticmethod
     def get_email_message(ap):
+        """Build email message"""
         subject = f"{ap.disposition.replace('-','+')} {ap.size} m2, {ap.price} Kč"
         body = f"""\
             {ap.url}

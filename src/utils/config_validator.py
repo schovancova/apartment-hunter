@@ -1,44 +1,50 @@
+"""Config validator"""
+
 
 class ConfigBool:
-    def __init__(self): pass
-
+    """Config boolean value"""
     @staticmethod
     def validate(value):
+        """Validate"""
         try:
             bool(value)
         except ValueError:
-            return f"Invalid bool value: {value}"
+            raise ValueError(f"Invalid bool value: {value}")
 
 
 class ConfigInt:
-    def __init__(self): pass
-
+    """Config integer value"""
     @staticmethod
     def validate(value):
+        """Validate"""
         try:
             int(value)
         except ValueError:
-            return f"Invalid integer value: {value}"
+            raise ValueError(f"Invalid integer value: {value}")
 
 
 class ConfigList:
+    """Config list value"""
     def __init__(self, allowed, separator):
         self.allowed = allowed
         self.separator = separator
 
     def validate(self, value):
+        """Validate"""
         for val in value.split(self.separator):
             if val not in self.allowed:
-                return f"Invalid value: {val} (allowed are {self.allowed})"
+                raise ValueError(f"Invalid value: {val} (allowed are {self.allowed})")
 
 
 class ConfigValue:
+    """Config single value"""
     def __init__(self, allowed):
         self.allowed = allowed
 
     def validate(self, value):
+        """Validate"""
         if value not in self.allowed:
-            return f"Invalid value: {value} (allowed are {self.allowed})"
+            raise ValueError(f"Invalid value: {value} (allowed are {self.allowed})")
 
 
 ULOVDOMOV_TYPES = ["studio", "1+1", "2+1", "3+1", "4+1", "1+kk", "2+kk",
@@ -48,7 +54,7 @@ BEZREALITKY_TYPES = ["studio", "1+1", "2+1", "3+1", "4+1", "1+kk", "2+kk", "3+kk
 OFFER_TYPES = ["rent", "sharing", "sale"]
 ESTATE_TYPES = ["flat"]
 
-validators = {
+VALIDATORS = {
     "ulov_domov": {
         "city": ConfigValue(allowed=["Brno"]),
         "radius": ConfigInt(),
@@ -76,16 +82,17 @@ validators = {
 
 
 def validate_config(config):
+    """Validate config file"""
     error_msgs = []
     for site in config.sections():
         for (key, value) in config.items(site):
             try:
-                validator = validators[site][key]
-                error_msg = validator.validate(value)
-                if error_msg:
-                    error_msgs.append(f"{site}: {key} : {error_msg}")
+                validator = VALIDATORS[site][key]
+                try:
+                    validator.validate(value)
+                except ValueError as ex:
+                    error_msgs.append(f"{site}: {key} : {str(ex)}")
             except KeyError:
                 error_msgs.append(f"{site}: Unrecognized key: {key}")
     if error_msgs:
         exit("\n".join(error_msgs))
-

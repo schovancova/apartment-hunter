@@ -1,3 +1,4 @@
+"""Common functions"""
 from geopy.geocoders import Nominatim
 import configparser
 from tinydb import TinyDB
@@ -6,23 +7,27 @@ import logging
 
 
 def get_config(path):
+    """Get config file"""
     config = configparser.ConfigParser()
     config.read(path)
     return config
 
 
 def get_db(path):
+    """Get db"""
     open(path, 'a+')
     return TinyDB(path)
 
 
 def get_logger():
+    """Get logger"""
     logger = logging.getLogger('apartment_logger')
     logging.basicConfig(level=logging.INFO)
     return logger
 
 
 def get_bounding_box(city, km_radius):
+    """Get bounding box latitudes and logitudes (4 points making a square around the city)"""
     geo_locator = Nominatim(user_agent="apartment-hunter")
     location = geo_locator.geocode(city)
     offset = km_radius / 100.0

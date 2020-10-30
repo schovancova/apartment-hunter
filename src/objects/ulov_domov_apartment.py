@@ -1,10 +1,9 @@
 """https://www.ulovdomov.cz/"""
-import json
-import requests
 from datetime import datetime as dt
 
 
 class UlovDomovApartment:
+    """Representation of apartment on ulovdomov"""
     def __init__(self, ap):
         self.conveniences_url = "https://www.ulovdomov.cz/fe-api/common/conveniences"
         self.id = ap["id"]
@@ -21,19 +20,16 @@ class UlovDomovApartment:
         self.conveniences = ap['conveniences']
 
     def format_publish_date(self):
+        """Format publish date into universal format"""
         if not self.published:
             return ""
         return dt.strptime(self.published, "%Y-%m-%dT%H:%M:%S+%f").strftime("%d.%m. %Y %H:%M")
 
     def format_conveniences(self):
-        req = requests.get(self.conveniences_url)
-        content = json.loads(req.content)
-        result = []
-        for conv in content:
-            if conv["id"] in self.conveniences:
-                result.append(conv["label"])
-        return ", ".join(result)
+        """Formats conveniences into a string"""
+        return ", ".join(self.conveniences)
 
     @property
     def all(self):
+        """All attributes"""
         return self.__dict__

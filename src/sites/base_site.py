@@ -3,6 +3,7 @@ from tinydb import Query
 
 
 class BaseSite:
+    """Base site"""
     def __init__(self, price_min=None, price_max=None, size_min=None, size_max=None,
                  types=None, radius=5, city="Brno", active=True):
         self.price_min = price_min
@@ -12,12 +13,14 @@ class BaseSite:
         self.types = types
         self.radius = int(radius)
         self.city = city
-        self.active = active
+        self.active = True if active == "true" else False
         self.site = ""
 
-    def save_apartment_into_db(self, db, id):
-        db.insert({"id": id, 'site': self.site})
+    def save_apartment_into_db(self, database, apartment_id):
+        """Save into db"""
+        database.insert({"id": apartment_id, 'site': self.site})
 
-    def is_in_db(self, db, id):
+    def is_in_db(self, database, apartment_id):
+        """Check for presence in db"""
         apartment = Query()
-        return db.search((apartment.id == id) & (apartment.site == self.site))
+        return database.search((apartment.id == apartment_id) & (apartment.site == self.site))

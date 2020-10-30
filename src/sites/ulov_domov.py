@@ -1,17 +1,16 @@
 """https://www.ulovdomov.cz/"""
 import json
 import requests
-from datetime import datetime as dt
 from src.objects.ulov_domov_apartment import UlovDomovApartment
 from src.utils.common import get_bounding_box
 import src.utils.constants as const
 from src.sites.base_site import BaseSite
-from tinydb import Query
 
 disposition_url = "https://www.ulovdomov.cz/fe-api/disposition/filter-only/1"
 
 
 def index_to_disposition(index):
+    """Ulovdomov uses indexes instead of dispositions"""
     req = requests.get(disposition_url)
     content = json.loads(req.content)
     for disposition in content:
@@ -20,6 +19,7 @@ def index_to_disposition(index):
 
 
 def disposition_to_index(disp):
+    """Ulovdomov uses indexes instead of dispositions"""
     req = requests.get(disposition_url)
     content = json.loads(req.content)
     for disposition in content:
@@ -29,6 +29,7 @@ def disposition_to_index(disp):
 
 
 class UlovDomov(BaseSite):
+    """Ulovdomov site operator"""
     def __init__(self, price_min=None, price_max=None, size_min=None, size_max=None,
                  types=None, no_commission=None, radius=5, city="Brno", active=True):
         super().__init__(price_min, price_max, size_min, size_max, types, radius, city, active)
@@ -39,7 +40,7 @@ class UlovDomov(BaseSite):
             self.transform_types_into_indexes()
 
     def transform_types_into_indexes(self):
-        # translate universal filter into site filter
+        """Translate filter types into API indexed types"""
         site_types = {
             "studio": "garsonka",
             "atypical": "atypický",
@@ -54,6 +55,7 @@ class UlovDomov(BaseSite):
         self.types = list(map(str, sorted(result)))
 
     def build_payload(self):
+        """Build API payload"""
         bounding_box = get_bounding_box(self.city, self.radius)
         payload = {
             "query": "Brno",
@@ -74,6 +76,7 @@ class UlovDomov(BaseSite):
         return {k: v for k, v in payload.items() if v is not None}
 
     def get_new_apartments(self):
+        """Get new apartment objects"""
         payload = self.build_payload()
         req = requests.post(self.base_url, data=json.dumps(payload))
         content = json.loads(req.content)['offers']
@@ -81,6 +84,7 @@ class UlovDomov(BaseSite):
 
     @staticmethod
     def get_email_message(ap):
+        """Get email message text"""
         disposition = index_to_disposition(ap.disposition_id)
         commission = 'yes' if ap.commission else 'no'
         subject = f"{disposition} {ap.size}m2 {ap.city}, {ap.street}, {ap.price} Kč"
