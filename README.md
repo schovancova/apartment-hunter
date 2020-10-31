@@ -11,11 +11,16 @@ Slack, anything you want.
 
 ### Usage
 #### Setup email notifications
-You can choose to use email notifications - or not! Up to you. Here's how to do it:
-1. Create throw-away Gmail account for sending emails
-2. Edit ``configs/notifications.ini`` email section and set ``enable = true``, also
-add in your sender (throwaway) and receiver (where the notifications will arrive) emails.
-3. Put your new throwaway account email password into environment variable ``export EMAIL_PASS=...``
+If you prefer other provider than Gmail:
+1. Edit ``configs/notifications.ini`` email section and set ``enable = true``, also
+add edit sender, receiver, smtp_server and smtp_port attributes,
+2. Put your email password into environment variable ``export EMAIL_PASS=...``
+
+#### Setup Gmail notifications
+If you use Gmail, you'll just need username and password to configure it:
+1. Edit ``configs/notifications.ini`` gmail section and set ``enable = true``, also
+add in your sender and receiver (where the notifications will arrive) emails. They can be the same email.
+3. Put the password from the sender email into environment variable ``export GMAIL_PASS=...``
 
 #### Setup phone (and desktop) notifications
 This can work as a phone-only notifications or desktop too. You can have as many

@@ -6,15 +6,16 @@ import time
 from src.utils.notifier import Notifier
 from src.sites.ulov_domov import UlovDomov
 from src.sites.bez_realitky import BezRealitky
-from src.utils.config_validator import validate_config
+from src.validation.config_validator import validate_config
 from src.utils.common import get_config, get_db, get_logger
+from src.validation.definitions import SITES_VALIDATORS
 import src.utils.constants as const
 
 
 def main():
     """Main script"""
     config = get_config(const.CONFIG_PATH)
-    validate_config(config)
+    validate_config(config, definition=SITES_VALIDATORS)
     database = get_db(const.DB_PATH)
     logger = get_logger()
 
@@ -25,7 +26,7 @@ def main():
     notifier = Notifier()
     while True:
         for site in sites:
-            if not site.active:
+            if not site.enable:
                 continue
             for apartment in site.get_new_apartments():
                 logger.info(apartment.url)

@@ -1,4 +1,5 @@
 """Constants"""
+EMAIL_REGEX = r"[^@]+@[^@]+\.[^@]+"
 CONFIG_PATH = 'configs/apartments.ini'
 NOTIFICATIONS_CONFIG_PATH = 'configs/notifications.ini'
 DB_PATH = 'db/main.db'
@@ -9,6 +10,7 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:72.0) Gecko
 ULOVDOMOV_NAME = "ulov_domov"
 BEZREALITKY_NAME = "bez_realitky"
 
+GMAIL_NOTIFY = "gmail"
 EMAIL_NOTIFY = "email"
 PUSH_NOTIFY = "pushbullet"
 SLACK_NOTIFY = "slack"

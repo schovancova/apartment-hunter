@@ -10,8 +10,10 @@ from src.sites.base_site import BaseSite
 class BezRealitky(BaseSite):
     """Bezrealitky site operator"""
     def __init__(self, price_min=None, price_max=None, size_min=None, size_max=None,
-                 offer_type=None, types=None, estate_type=None, radius=5, city="Brno", active=True):
-        super().__init__(price_min, price_max, size_min, size_max, types, radius, city, active)
+                 offer_type=None, types=None, estate_type=None, radius=5, city="Brno", enable=True):
+        super().__init__(price_min, price_max, size_min, size_max, types, radius, city, enable)
+        if not self.enable:
+            return
         self.site = const.BEZREALITKY_NAME
         self.base_url = "https://www.bezrealitky.cz/api/record/markers"
         self.offer_type = offer_type
