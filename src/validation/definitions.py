@@ -12,7 +12,7 @@ SITES_VALIDATORS = {
     "ulov_domov": {
         "city": ConfigString(allowed=["Brno"]),
         "radius": ConfigInt(),
-        "enable": ConfigBool(),
+        "enabled": ConfigBool(),
         "price_min": ConfigInt(),
         "price_max": ConfigInt(),
         "size_max": ConfigInt(),
@@ -23,7 +23,7 @@ SITES_VALIDATORS = {
     "bez_realitky": {
         "city": ConfigString(allowed=["Brno"]),
         "radius": ConfigInt(),
-        "enable": ConfigBool(),
+        "enabled": ConfigBool(),
         "estate_type": ConfigString(allowed=ESTATE_TYPES),
         "offer_type": ConfigString(allowed=OFFER_TYPES),
         "price_min": ConfigInt(),
@@ -36,21 +36,21 @@ SITES_VALIDATORS = {
 
 NOTIFICATION_VALIDATORS = {
     "email": {
-        "enable": ConfigBool(required=True),
+        "enabled": ConfigBool(required=True),
         "sender": ConfigString(required=True, regex=EMAIL_REGEX),
         "receiver": ConfigString(required=True, regex=EMAIL_REGEX),
         "smtp_server": ConfigString(required=True),
         "smtp_port": ConfigInt(required=True)
     },
     "gmail": {
-        "enable": ConfigBool(required=True),
+        "enabled": ConfigBool(required=True),
         "sender": ConfigString(required=True, regex=EMAIL_REGEX),
         "receiver": ConfigString(required=True, regex=EMAIL_REGEX),
     },
     "pushbullet": {
-        "enable": ConfigBool(required=True),
+        "enabled": ConfigBool(required=True),
     },
     "slack": {
-        "enable": ConfigBool(required=True),
+        "enabled": ConfigBool(required=True),
     }
 }

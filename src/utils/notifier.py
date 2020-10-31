@@ -25,7 +25,7 @@ class Notifier:
         """Parse notification config"""
         notification_types = list(dict(config.items()).keys())[1:]
         for notification in notification_types:
-            if not config.getboolean(notification, "enable"):
+            if not config.getboolean(notification, "enabled"):
                 continue
             if notification == const.GMAIL_NOTIFY:
                 self.gmail_pass = self.get_env_variable("GMAIL_PASS", notification)

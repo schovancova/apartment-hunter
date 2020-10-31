@@ -6,7 +6,7 @@ def validate_config(config, definition):
     error_msgs = []
     for item, fields in definition.items():
         # do not check for correctness if disabled
-        if not config.has_section(item) or config[item]["enable"] == "false":
+        if not config.has_section(item) or config[item]["enabled"] == "false":
             continue
         for (key, value) in fields.items():
             validator = definition[item][key]

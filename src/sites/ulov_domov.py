@@ -31,9 +31,9 @@ def disposition_to_index(disp):
 class UlovDomov(BaseSite):
     """Ulovdomov site operator"""
     def __init__(self, price_min=None, price_max=None, size_min=None, size_max=None,
-                 types=None, no_commission=None, radius=5, city="Brno", enable=True):
-        super().__init__(price_min, price_max, size_min, size_max, types, radius, city, enable)
-        if not self.enable:
+                 types=None, no_commission=None, radius=5, city="Brno", enabled=True):
+        super().__init__(price_min, price_max, size_min, size_max, types, radius, city, enabled)
+        if not self.enabled:
             return
         self.site = const.ULOVDOMOV_NAME
         self.no_commission = True if no_commission == "true" else False

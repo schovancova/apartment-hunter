@@ -19,15 +19,15 @@ def main():
     database = get_db(const.DB_PATH)
     logger = get_logger()
 
-    sites = [
-        UlovDomov(**dict(config.items(const.ULOVDOMOV_NAME))),
-        BezRealitky(**dict(config.items(const.BEZREALITKY_NAME)))
-    ]
+    ulovdomov_config = dict(config.items(const.ULOVDOMOV_NAME))
+    bezrealitky_config = dict(config.items(const.BEZREALITKY_NAME))
+    sites = [site for site in [
+        UlovDomov(**ulovdomov_config),
+        BezRealitky(**bezrealitky_config)] if site.enabled]
+
     notifier = Notifier()
     while True:
         for site in sites:
-            if not site.enable:
-                continue
             for apartment in site.get_new_apartments():
                 logger.info(apartment.url)
                 if not site.is_in_db(database, apartment.id):

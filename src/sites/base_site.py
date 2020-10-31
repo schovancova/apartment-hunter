@@ -5,7 +5,7 @@ from tinydb import Query
 class BaseSite:
     """Base site"""
     def __init__(self, price_min=None, price_max=None, size_min=None, size_max=None,
-                 types=None, radius=5, city="Brno", enable=True):
+                 types=None, radius=5, city="Brno", enabled=True):
         self.price_min = price_min
         self.price_max = price_max
         self.size_min = size_min
@@ -13,7 +13,7 @@ class BaseSite:
         self.types = types
         self.radius = int(radius)
         self.city = city
-        self.enable = True if enable == "true" else False
+        self.enabled = True if enabled == "true" else False
         self.site = ""
 
     def save_apartment_into_db(self, database, apartment_id):
