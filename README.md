@@ -13,7 +13,7 @@ Slack, anything you want.
 #### Setup email notifications
 You can choose to use email notifications - or not! Up to you. Here's how to do it:
 1. Create throw-away Gmail account for sending emails
-2. Edit ``configs/notifications.ini`` email section and set ``enable_email = true``, also
+2. Edit ``configs/notifications.ini`` email section and set ``enable = true``, also
 add in your sender (throwaway) and receiver (where the notifications will arrive) emails.
 3. Put your new throwaway account email password into environment variable ``export EMAIL_PASS=...``
 
@@ -23,7 +23,7 @@ phones and as many browser included. Here's what you'll need:
 1. Download Pushbullet https://play.google.com/store/apps/details?id=com.pushbullet.android
 2. Set it up to your liking and create an API access token here https://www.pushbullet.com/#settings
 3. Include the token in the environment variable ``export PUSHBULLET_TOKEN=...``
-4. Edit ``configs/notifications.ini`` pushbullet section and set ``enable_push = true``
+4. Edit ``configs/notifications.ini`` pushbullet section and set ``enable = true``
 
 #### Setup Slack notifications
 If you use Slack at work, this is a perfect choice for you.
@@ -33,7 +33,7 @@ new workspace.
 3. Create a new incoming webhook and assign it to a channel you wish to receive
 messages on.
 4. Copy webhook URL and put it into environment variable ``export SLACK_WEBHOOK=...``
-5. Edit ``configs/notifications.ini`` slack section and set ``enable_slack = true``
+5. Edit ``configs/notifications.ini`` slack section and set ``enable = true``
 
 #### How to run the app
 After you have enabled and set up at least 1 notification option (and disabled

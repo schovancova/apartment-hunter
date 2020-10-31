@@ -8,3 +8,9 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:72.0) Gecko
 
 ULOVDOMOV_NAME = "ulov_domov"
 BEZREALITKY_NAME = "bez_realitky"
+
+EMAIL_NOTIFY = "email"
+PUSH_NOTIFY = "pushbullet"
+SLACK_NOTIFY = "slack"
+
+CHECK_FREQUENCY_IN_SECONDS = 180
