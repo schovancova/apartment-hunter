@@ -3,6 +3,7 @@
 import logging
 import time
 
+from src.sites.sreality import Sreality
 from src.utils.notifier import Notifier
 from src.sites.ulov_domov import UlovDomov
 from src.sites.bez_realitky import BezRealitky
@@ -21,9 +22,11 @@ def main():
 
     ulovdomov_config = dict(config.items(const.ULOVDOMOV_NAME))
     bezrealitky_config = dict(config.items(const.BEZREALITKY_NAME))
+    sreality_config = dict(config.items(const.SREALITY_NAME))
     sites = [site for site in [
         UlovDomov(**ulovdomov_config),
-        BezRealitky(**bezrealitky_config)] if site.enabled]
+        BezRealitky(**bezrealitky_config),
+        Sreality(**sreality_config)] if site.enabled]
 
     notifier = Notifier()
     while True:
