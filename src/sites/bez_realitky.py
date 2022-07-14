@@ -1,5 +1,7 @@
 """https://www.bezrealitky.cz/"""
 import json
+import re
+
 import requests
 from src.objects.bez_realitky_apartment import BezRealitkyApartment
 import src.utils.constants as const
@@ -11,10 +13,10 @@ class BezRealitky(BaseSite):
     def __init__(self, price_min=None, price_max=None, size_min=None, size_max=None,
                  offer_type=None, types=None, estate_type=None, radius=5, city="Brno", enabled=True):
         super().__init__(price_min, price_max, size_min, size_max, types, radius, city, enabled)
+        self.base_url = None
         if not self.enabled:
             return
         self.site = const.BEZREALITKY_NAME
-        self.base_url = "https://www.bezrealitky.cz/_next/data/84971a3f10bdc929aa9e0caefb226898e96b2e10/cs/search.json"
         self.offer_type = offer_type
         self.estate_type = estate_type
         if offer_type:
@@ -30,6 +32,13 @@ class BezRealitky(BaseSite):
             "flat": "BYT",
             "house": "DUM",
         }.get(self.estate_type)
+
+    @staticmethod
+    def get_build_id():
+        """This apparently changes every hour or so"""
+        response = requests.get("https://www.bezrealitky.cz/")
+        id_string = re.findall(r'buildId":"\w*"', response.text)[0]
+        return id_string.replace('"', "").split(':')[-1]
 
     def transform_offer_type(self):
         """Transform filter offer type into site API offer type"""
@@ -56,6 +65,10 @@ class BezRealitky(BaseSite):
                 result.append(site_types.get(disposition, disposition))
         return "/".join(result)
 
+    def update_api_url(self):
+        build_id = self.get_build_id()
+        self.base_url = f"https://www.bezrealitky.cz/_next/data/{build_id}/cs/search.json"
+
     def build_payload(self):
         """Build API payload"""
         payload = {
@@ -74,6 +87,7 @@ class BezRealitky(BaseSite):
 
     def get_new_apartments(self):
         """Get new apartment objects"""
+        self.update_api_url()  # it constantly changes due to build IDs in URL
         payload = self.build_payload()
         req = requests.get(self.base_url, headers=const.HEADERS, params=payload)
         content = json.loads(req.content)
