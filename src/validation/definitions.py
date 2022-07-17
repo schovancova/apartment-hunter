@@ -6,7 +6,7 @@ ULOVDOMOV_TYPES = ["studio", "1+1", "2+1", "3+1", "4+1", "1+kk", "2+kk",
 BEZREALITKY_TYPES = ["studio", "1+1", "2+1", "3+1", "4+1", "1+kk", "2+kk", "3+kk", "4+kk",
                      "5+1", "5+kk", "6+1", "6+kk", "7+kk", "7+1", "other"]
 SREALITY_TYPES = ["1+1", "2+1", "3+1", "4+1", "5+1", "1+kk", "2+kk", "3+kk", "4+kk", "5+kk",
-                  "room", "atypical", "6+"]
+                  "room", "atypical", "6+", "studio"]
 OFFER_TYPES = ["rent", "sharing", "sale"]
 ESTATE_TYPES = ["flat"]
 

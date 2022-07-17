@@ -13,7 +13,7 @@ class SrealityApartment:
 
     def __init__(self, ap):
         disposition = index_to_disposition(ap["seo"]["category_sub_cb"])
-        self.id = ap["hash_id"]
+        self.id = ap['seo']['locality']
         self.name = ap["name"]
         self.url = f"https://www.sreality.cz/detail/pronajem/byt/{disposition}/{ap['seo']['locality']}/{self.id}"
         self.disposition = disposition

@@ -78,7 +78,6 @@ Possible config values for "offer_type" option - use just 1
 ### Sreality.cz
 Possible config values for "types" option - you can use any combinations,
 must be separated by a single comma
-* studio
 * from 1+1 and 1+kk all the way up 5+1 and 5+kk
 * room
 * atypical
