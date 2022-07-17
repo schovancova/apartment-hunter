@@ -15,7 +15,7 @@ class SrealityApartment:
         disposition = index_to_disposition(ap["seo"]["category_sub_cb"])
         self.id = ap['seo']['locality']
         self.name = ap["name"]
-        self.url = f"https://www.sreality.cz/detail/pronajem/byt/{disposition}/{ap['seo']['locality']}/{self.id}"
+        self.url = f"https://www.sreality.cz/detail/pronajem/byt/{disposition}/{ap['seo']['locality']}/{ap['hash_id']}"
         self.disposition = disposition
         self.price = ap["price"]
         self.tags = str(ap['labels'])
