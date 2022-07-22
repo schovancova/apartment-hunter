@@ -30,15 +30,18 @@ def main():
 
     notifier = Notifier()
     while True:
-        for site in sites:
-            for apartment in site.get_new_apartments():
-                logger.info(apartment.url)
-                if not site.is_in_db(database, apartment.id):
-                    subject, message = site.get_email_message(apartment)
-                    notifier.notify_all(subject, message, apartment.url)
-                    logging.info(f"New apartment found {apartment.url}")
-                    site.save_apartment_into_db(database, apartment.id)
-        time.sleep(const.CHECK_FREQUENCY_IN_SECONDS)
+        try:
+            for site in sites:
+                for apartment in site.get_new_apartments():
+                    logger.info(apartment.url)
+                    if not site.is_in_db(database, apartment.id):
+                        subject, message = site.get_email_message(apartment)
+                        notifier.notify_all(subject, message, apartment.url)
+                        logging.info(f"New apartment found {apartment.url}")
+                        site.save_apartment_into_db(database, apartment.id)
+            time.sleep(const.CHECK_FREQUENCY_IN_SECONDS)
+        except Exception as ex:
+            notifier.notify_all("It dropped", str(ex), "boohooo")
 
 
 if __name__ == "__main__":
