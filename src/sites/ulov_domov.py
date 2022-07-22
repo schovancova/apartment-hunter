@@ -51,7 +51,9 @@ class UlovDomov(BaseSite):
             "bounds": {
                 "north_east": bounding_box["ne"],
                 "south_west": bounding_box["sw"]}}
-        return {k: v for k, v in payload.items() if v is not None}
+        result = {k: v for k, v in payload.items() if v is not None}
+        result['offer_type_id'] = None  # this has to be there
+        return result
 
     def get_new_apartments(self):
         """Get new apartment objects"""
