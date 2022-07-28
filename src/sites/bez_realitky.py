@@ -14,7 +14,7 @@ class BezRealitky(BaseSite):
                  offer_type=None, types=None, estate_type=None, radius=5, city="Brno", enabled=True):
         super().__init__(price_min, price_max, size_min, size_max, types, radius, city, enabled)
         self.base_url = None
-        self.price_max += 5000  # bezrealitky counts total price
+        self.price_max = str(int(self.price_max) + 5000)  # bezrealitky counts total price
         if not self.enabled:
             return
         self.site = const.BEZREALITKY_NAME
