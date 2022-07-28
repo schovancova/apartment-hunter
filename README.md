@@ -9,7 +9,7 @@ Slack - emails do not work currently.
 3. Install the app and launch. It can run on your PC, on a server, on a cloud.
 4. Get all the sweet apartment notifications for free from most popular apartment sites.
 
-** Please note this currently works only for Brno except for Ulovdomov **
+** Please note  this currently works only for Brno except for Ulovdomov **
 
 ### Usage
 #### [Required]Setup Google cloud Firestore native as DB
