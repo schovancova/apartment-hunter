@@ -4,7 +4,7 @@ This amazing tool will help you find a new apartment without any hassle,
 extra payments, spam or having to subscribe to 10 different paid apartment services.
 It's easy.
 1. Setup notification methods - you can do phone notifications, desktop notification,
-Slack, anything you want - emails do not work currently.
+Slack - emails do not work currently.
 2. Setup filters - What is your budget? All stored in a compact configuration file.
 3. Install the app and launch. It can run on your PC, on a server, on a cloud.
 4. Get all the sweet apartment notifications for free from most popular apartment sites.
@@ -12,16 +12,14 @@ Slack, anything you want - emails do not work currently.
 ** Please note this currently works only for Brno except for Ulovdomov **
 
 ### Usage
-#### Setup phone (and desktop) notifications
-This can work as a phone-only notifications or desktop too. You can have as many
-phones and as many browser included. Here's what you'll need:
-1. Download Pushbullet https://play.google.com/store/apps/details?id=com.pushbullet.android
-2. Set it up to your liking and create an API access token here https://www.pushbullet.com/#settings
-3. Include the token in the environment variable ``export PUSHBULLET_TOKEN=...``
-4. Edit ``configs/notifications.ini`` pushbullet section and set ``enabled = true``
+#### [Required]Setup Google cloud Firestore native as DB
+According to this guide https://stackoverflow.com/questions/47446480/how-to-use-google-api-credentials-json-on-heroku you need to put
+the credentials into your app. I use heroku and there is tutorial on how to do this. Simply you need to make sure 
+that DB client has access to your instance of Firestore. 
 
-#### Setup Slack notifications
-If you use Slack at work, this is a perfect choice for you.
+
+#### [Recommended]Setup Slack notifications
+This is recommended notification option. If you use Slack at work, this is a perfect choice for you.
 1. Create a new Slack workspace (private or work email, does not matter)
 2. Go to https://api.slack.com/, create a new app and assign it to your
 new workspace.
@@ -29,6 +27,14 @@ new workspace.
 messages on.
 4. Copy webhook URL and put it into environment variable ``export SLACK_WEBHOOK=...``
 5. Edit ``configs/notifications.ini`` slack section and set ``enabled = true``
+
+#### [Optional] Setup phone (and desktop) Pushbullet notifications
+This can work as a phone-only notifications or desktop too. You can have as many
+phones and as many browser included. Although free pushbullet account allows just 500 requests. Here's what you'll need:
+1. Download Pushbullet https://play.google.com/store/apps/details?id=com.pushbullet.android
+2. Set it up to your liking and create an API access token here https://www.pushbullet.com/#settings
+3. Include the token in the environment variable ``export PUSHBULLET_TOKEN=...``
+4. Edit ``configs/notifications.ini`` pushbullet section and set ``enabled = true``
 
 #### How to run the app
 After you have enabled and set up at least 1 notification option (and disabled
@@ -41,7 +47,6 @@ If not, check the error output.
 At this moment you can set filters like 
 * price
 * size of apartment
-* radius (how far from city)
 * type of apartment
 * which sites to search on
 
@@ -58,7 +63,7 @@ Possible config values for "types" option - you can use any combinations,
 must be separated by a single comma
 * studio
 * from 1+1 and 1+kk all the way up 4+1 and 4+kk
-* atypical, house, 5+, room
+* atypical, house, room
 
 Example: ``types = studio,house,3+1,atypical``
 

@@ -70,10 +70,10 @@ class Sreality(BaseSite):
     @staticmethod
     def get_email_message(ap):
         """Build email message"""
-        subject = f"{ap.name}, {ap.price} Kč + energies @ {ap.address}"
-        body = f"""\
-            {ap.url}
-            Price: {ap.price} Kc,
-            Tags: {ap.tags},
-            """
+        subject = f"*{ap.name}*, {ap.price} Kč + fees @ {ap.address}"
+        body = f"""\n
+       * *Price/m2 (rent only)*: {int(ap.price / ap.size)}
+       * *Conveniences*: {ap.format_conveniences()}
+       * *Photo*: {ap.image}
+       """
         return subject, body

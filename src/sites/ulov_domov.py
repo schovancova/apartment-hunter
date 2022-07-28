@@ -43,7 +43,7 @@ class UlovDomov(BaseSite):
             "price_from": self.price_min,
             "price_to": self.price_max,
             "acreage_from": self.size_min,
-            "acreage_to": self.price_max,
+            "acreage_to": self.size_max,
             "is_price_commision_free": self.no_commission if self.no_commission else None,
             "sort_by": "date:desc",
             "page": 1,
@@ -67,13 +67,18 @@ class UlovDomov(BaseSite):
         """Get email message text"""
         disposition = index_to_disposition(ap.disposition_id)
         commission = 'yes' if ap.commission else 'no'
-        subject = f"{disposition} {ap.size}m2, {ap.price} + energies Kč @ {ap.city}, {ap.street}"
-        body = f"""\
-            {ap.url}
-            Published: {ap.format_publish_date()}
-            Commission: {commission}
-            Monthly fee: {ap.monthly_fee},
-            Price note: {ap.price_note}
-            Conveniences: {ap.format_conveniences()}
-            """
+        if ap.monthly_fee:
+            fee_text = ap.monthly_fee
+        else:
+            fee_text = "fees"
+        subject = f"*{disposition}*  {ap.size}m2, {ap.price} + {fee_text} Kč @ {ap.city}, {ap.street}"
+        body = f"""\n
+        * *Published*: {ap.format_publish_date()}
+        * *RK Commission*: {commission}
+        * *Price/m2 (rent only)*: {int(ap.price/ap.size)}
+        * *Monthly fee*: {ap.monthly_fee if ap.monthly_fee else "-"}
+        * *Price note*: {ap.price_note}
+        * *Conveniences*: {ap.format_conveniences()}
+        * *Photo*: {ap.photo}
+        """
         return subject, body

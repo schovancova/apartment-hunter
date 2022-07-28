@@ -18,6 +18,10 @@ class UlovDomovApartment:
         self.monthly_fee = ap["price_monthly_fee"]
         self.price_note = ap['price_note']
         self.conveniences = ap['conveniences']
+        if len(ap['photos']) > 0:
+            self.photo = ap['photos'][0]['path']
+        else:
+            self.photo = ""
 
     def format_publish_date(self):
         """Format publish date into universal format"""

@@ -96,11 +96,12 @@ class BezRealitky(BaseSite):
     @staticmethod
     def get_email_message(ap):
         """Build email message"""
-        disp = ap.disposition.replace("DISP_", "").replace("_","+")
-        subject = f"{disp} {ap.size} m2, {ap.price} Kč @ {ap.address}"
-        body = f"""\
-            {ap.url}
-            Price: {ap.price} Kc,
-            Land: {ap.size} m2,
-            """
+        disp = ap.disposition.replace("DISP_", "").replace("_", "+")
+        subject = f"*{disp}*  {ap.size}m2, {ap.price} + {ap.monthly_costs} Kč @ {ap.address}"
+        body = f"""\n
+        * *Price full*: {ap.price + ap.monthly_costs} Kc
+        * *Price/m2 (rent only)*: {int(ap.price/ap.size)}
+        * *Conveniences*: {ap.format_conveniences()}
+        * *Photo*: <{ap.image}|image>
+        """
         return subject, body

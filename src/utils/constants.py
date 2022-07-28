@@ -11,8 +11,6 @@ ULOVDOMOV_NAME = "ulov_domov"
 BEZREALITKY_NAME = "bez_realitky"
 SREALITY_NAME = "sreality"
 
-GMAIL_NOTIFY = "gmail"
-EMAIL_NOTIFY = "email"
 PUSH_NOTIFY = "pushbullet"
 SLACK_NOTIFY = "slack"
 

@@ -1,5 +1,5 @@
 """One site to rule them all"""
-from tinydb import Query
+from datetime import datetime
 
 
 class BaseSite:
@@ -16,11 +16,15 @@ class BaseSite:
         self.enabled = True if enabled == "true" else False
         self.site = ""
 
-    def save_apartment_into_db(self, database, apartment_id):
+    def save_apartment_into_db(self, database, apartment_id, apartment_url):
         """Save into db"""
-        database.insert({"id": apartment_id, 'site': self.site})
+        now = datetime.now()
+        compound_id = f"{self.site}-{apartment_id}"
+        database.collection("apartments").document(compound_id).set(
+            {'url': apartment_url, 'timestamp': now.strftime("%d.%m. %Y, %H:%M:%S")})
 
     def is_in_db(self, database, apartment_id):
         """Check for presence in db"""
-        apartment = Query()
-        return database.search((apartment.id == apartment_id) & (apartment.site == self.site))
+        compound_id = f"{self.site}-{apartment_id}"
+        doc = database.collection("apartments").document(compound_id).get()
+        return doc.exists

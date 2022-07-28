@@ -1,5 +1,4 @@
 """https://www.bezrealitky.cz/"""
-from datetime import datetime
 
 
 class BezRealitkyApartment:
@@ -9,12 +8,18 @@ class BezRealitkyApartment:
         self.id = ap["id"]
         self.url = f"https://www.bezrealitky.cz/nemovitosti-byty-domy/{ap['uri']}"
         self.disposition = ap["disposition"]
-        self.price = ap["price"] + ap["charges"]
+        self.price = ap["price"]
         self.estate_type = ap["offerType"]
         self.size = ap["surface"]
         self.size_land = ap["surfaceLand"]
-        self.tags = str(ap['tags'])
+        self.tags = ap['tags']
         self.address = ap['address']
+        self.monthly_costs = ap['charges']
+        self.image = ap['mainImage']['url']
+
+    def format_conveniences(self):
+        """Formats conveniences into a string"""
+        return ", ".join(self.tags)
 
     @property
     def all(self):

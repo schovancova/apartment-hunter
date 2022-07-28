@@ -11,55 +11,32 @@ OFFER_TYPES = ["rent", "sharing", "sale"]
 ESTATE_TYPES = ["flat"]
 
 SITES_VALIDATORS = {
-    "ulov_domov": {
-        "city": ConfigString(allowed=["Brno"]),
-        "radius": ConfigInt(),
-        "enabled": ConfigBool(),
+    "general": {
         "price_min": ConfigInt(),
         "price_max": ConfigInt(),
         "size_max": ConfigInt(),
         "size_min": ConfigInt(),
+    },
+    "ulov_domov": {
+        "enabled": ConfigBool(),
         "types": ConfigList(separator=",", allowed=ULOVDOMOV_TYPES),
         "no_commission": ConfigBool(),
     },
     "bez_realitky": {
-        "city": ConfigString(allowed=["Brno"]),
-        "radius": ConfigInt(),
         "enabled": ConfigBool(),
         "estate_type": ConfigString(allowed=ESTATE_TYPES),
         "offer_type": ConfigString(allowed=OFFER_TYPES),
-        "price_min": ConfigInt(),
-        "price_max": ConfigInt(),
-        "size_max": ConfigInt(),
-        "size_min": ConfigInt(),
         "types": ConfigList(separator=",", allowed=BEZREALITKY_TYPES),
     },
     "sreality": {
-        "city": ConfigString(allowed=["Brno"]),
         "enabled": ConfigBool(),
         "estate_type": ConfigString(allowed=ESTATE_TYPES),
         "offer_type": ConfigString(allowed=OFFER_TYPES),
-        "price_min": ConfigInt(),
-        "price_max": ConfigInt(),
-        "size_max": ConfigInt(),
-        "size_min": ConfigInt(),
         "types": ConfigList(separator=",", allowed=SREALITY_TYPES),
     }
 }
 
 NOTIFICATION_VALIDATORS = {
-    "email": {
-        "enabled": ConfigBool(required=True),
-        "sender": ConfigString(required=True, regex=EMAIL_REGEX),
-        "receiver": ConfigString(required=True, regex=EMAIL_REGEX),
-        "smtp_server": ConfigString(required=True),
-        "smtp_port": ConfigInt(required=True)
-    },
-    "gmail": {
-        "enabled": ConfigBool(required=True),
-        "sender": ConfigString(required=True, regex=EMAIL_REGEX),
-        "receiver": ConfigString(required=True, regex=EMAIL_REGEX),
-    },
     "pushbullet": {
         "enabled": ConfigBool(required=True),
     },

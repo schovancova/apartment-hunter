@@ -42,7 +42,7 @@ class Notifier:
 
     def notify_all(self, subject, message, url):
         if const.SLACK_NOTIFY in self.enabled:
-            self.send_slack_message(subject, url)
+            self.send_slack_message(subject, message, url)
         if const.PUSH_NOTIFY in self.enabled:
             self.send_push_message(subject, message, url)
 
@@ -56,9 +56,9 @@ class Notifier:
                 message=message, token=self.push_token, title=subject, type_='note',
                 url=url, source_device_iden=sender, device_iden=device['iden'])
 
-    def send_slack_message(self, subject, url):
+    def send_slack_message(self, subject, message, url):
         """Send slack message"""
         slack = get_notifier("slack")
-        slack.notify(message=f"{subject} {url}", webhook_url=self.slack_webhook)
+        slack.notify(message=f"{subject} {message} {url}", webhook_url=self.slack_webhook)
 
 

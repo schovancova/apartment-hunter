@@ -1,12 +1,10 @@
 """Common functions"""
-import os
-import errno
 import math
 import logging
 
 from geopy.geocoders import Nominatim
+from google.cloud import firestore
 import configparser
-from tinydb import TinyDB
 
 
 def get_config(path):
@@ -16,16 +14,9 @@ def get_config(path):
     return config
 
 
-def get_db(path):
+def get_db():
     """Get db"""
-    if not os.path.exists(os.path.dirname(path)):
-        try:
-            os.makedirs(os.path.dirname(path))
-        except OSError as exc:  # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
-    open(path, 'a+')
-    return TinyDB(path)
+    return firestore.Client()
 
 
 def get_logger():

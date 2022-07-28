@@ -1,6 +1,6 @@
 configparser
-tinydb
 requests
 geopy
 beautifulsoup4
 notifiers
+google-cloud-firestore
