@@ -8,7 +8,7 @@ from src.utils.notifier import Notifier
 from src.sites.ulov_domov import UlovDomov
 from src.sites.bez_realitky import BezRealitky
 from src.validation.config_validator import validate_config
-from src.utils.common import get_config, get_db, get_logger
+from src.utils.common import get_config, get_db, get_logger, determine_frequency
 from src.validation.definitions import SITES_VALIDATORS
 import src.utils.constants as const
 
@@ -40,7 +40,8 @@ def main():
                         notifier.notify_all(subject, message, apartment.url)
                         logging.info(f"New apartment found {apartment.url}")
                         site.save_apartment_into_db(database, apartment.id, apartment.url)
-            time.sleep(const.CHECK_FREQUENCY_IN_SECONDS)
+            freq = determine_frequency()
+            time.sleep(freq)
         except Exception as ex:
             notifier.notify_all("It dropped", str(ex), "boohooo")
 

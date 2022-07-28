@@ -1,10 +1,13 @@
 """Common functions"""
+from datetime import datetime, time as datetime_time
 import math
 import logging
 
 from geopy.geocoders import Nominatim
 from google.cloud import firestore
 import configparser
+
+from src.utils.constants import CHECK_FREQUENCY_IN_SECONDS_NIGHT, CHECK_FREQUENCY_IN_SECONDS_DAY
 
 
 def get_config(path):
@@ -45,3 +48,11 @@ def get_bounding_box(city, km_radius):
         "sw": {"lat": lat_min, "lng": lng_min},
         "se": {"lat": lat_min, "lng": lng_max_twice},
     }
+
+
+def determine_frequency():
+    now = datetime.now()
+    now_time = now.time()
+    if now_time >= datetime_time(23, 59) or now_time <= datetime_time(6, 00):
+        return CHECK_FREQUENCY_IN_SECONDS_NIGHT
+    return CHECK_FREQUENCY_IN_SECONDS_DAY
