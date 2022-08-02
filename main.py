@@ -2,6 +2,7 @@
 """Main script"""
 import logging
 import time
+import traceback
 
 from src.sites.sreality import Sreality
 from src.utils.notifier import Notifier
@@ -31,8 +32,8 @@ def main():
 
     notifier = Notifier()
     while True:
-        try:
-            for site in sites:
+        for site in sites:
+            try:
                 for apartment in site.get_new_apartments():
                     logger.info(apartment.url)
                     if not site.is_in_db(database, apartment.id):
@@ -40,10 +41,10 @@ def main():
                         notifier.notify_all(subject, message, apartment.url)
                         logging.info(f"New apartment found {apartment.url}")
                         site.save_apartment_into_db(database, apartment.id, apartment.url)
-            freq = determine_frequency()
-            time.sleep(freq)
-        except Exception as ex:
-            notifier.notify_all("It dropped", str(ex), "boohooo")
+            except Exception as ex:
+                notifier.notify_all(f"It dropped for site *{site.site}*", traceback.format_exc(), "Boohoo. Will be retrying soon")
+        freq = determine_frequency()
+        time.sleep(freq)
 
 
 if __name__ == "__main__":
