@@ -65,7 +65,8 @@ class Sreality(BaseSite):
         payload = self.build_payload()
         req = requests.get(self.base_url, headers=const.HEADERS, params=payload)
         content = json.loads(req.content)
-        return [SrealityApartment(ap) for ap in content['_embedded']['estates']]
+        # ignore region tips that are usually irrelevant
+        return [SrealityApartment(ap) for ap in content['_embedded']['estates'] if ap['region_tip'] == 0]
 
     @staticmethod
     def get_email_message(ap):
