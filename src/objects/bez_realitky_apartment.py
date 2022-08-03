@@ -15,7 +15,10 @@ class BezRealitkyApartment:
         self.tags = ap['tags']
         self.address = ap['address']
         self.monthly_costs = ap['charges']
-        self.image = ap['mainImage']['url']
+        if ap['mainImage']:
+            self.image = ap['mainImage']['url']
+        else:
+            self.image = None
 
     def format_conveniences(self):
         """Formats conveniences into a string"""
